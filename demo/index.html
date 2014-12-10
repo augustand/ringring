@@ -1,0 +1,92 @@
+<!Doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>a make down editor</title>
+
+    <link type="text/css" rel="stylesheet" href="font-awesome-4.2.0/css/font-awesome.min.css"/>
+    <link type="text/css" rel="stylesheet" href="codemirror/lib/codemirror.css"/>
+    <link type="text/css" rel="stylesheet" href="highlight/styles/xcode.css"/>
+    <link type="text/css" rel="stylesheet" href="ringring.css"/>
+
+
+    <script src="codemirror/lib/codemirror.js"></script>
+    <script src="codemirror/mode/markdown/markdown.js"></script>
+    <script src="marked/lib/marked.js"></script>
+    <script src="highlight/highlight.pack.js"></script>
+    <script src="ringring.js"></script>
+</head>
+<body>
+    <div class="rr">
+        <div class="rr-container">
+            <div class="rr-col">
+                <menu class="rr-menu">
+                    <li class="rr-head"><i class="fa fa-text-height"></i></li>
+                    <li class="rr-listitem"><i class="fa fa-list"></i></li>
+                    <li class="rr-empha"><i class="fa fa-italic"></i></li>
+                    <li class="rr-blockquote"><i class="fa fa-indent"></i></li>
+                    <li class="rr-code"><i class="fa fa-code"></i></li>
+                    <li class="rr-line"><i class="fa fa-ellipsis-h"></i></li>
+                </menu>
+                <div class="rr-input">
+                    <input type="text" name="title" placeholder="..."/>
+                </div> 
+                <textarea class="rr-text"></textarea>
+            </div>
+            <div class="rr-col">
+                <div class="rr-preview"></div>
+            </div>
+        </div>
+    </div>
+
+    <script> 
+    (function (Ringring, CodeMirror, marked, hljs) {
+        var rr = document.querySelector('.rr'),
+            rrText       = rr.querySelector('.rr-text'),
+            rrPreview    = rr.querySelector('.rr-preview'),
+            rrHead       = rr.querySelector('.rr-head'),
+            rrListitem   = rr.querySelector('.rr-listitem'),
+            rrEmpha      = rr.querySelector('.rr-empha'),
+            rrBlockquote = rr.querySelector('.rr-blockquote'),
+            rrCode       = rr.querySelector('.rr-code'),
+            rrLine       = rr.querySelector('.rr-line');
+
+            // 初始化编辑器,详情请参看CodeMirror模块说明文档
+            cm = CodeMirror.fromTextArea(rrText, {
+                lineWrapping: true,
+                lineNumbers: true
+            }),
+            cmdoc = cm.getDoc();
+
+        // 设置marked模块配置,详情请参看marked模块说明文档
+        marked.setOptions({
+            highlight: function (code) {
+                return hljs.highlightAuto(code).value;
+            },
+            breaks: true,
+            sanitize: false
+        });
+
+        // 当编辑器文本内容变化时,在预览视图解析为HTML内容
+        cm.on('change', function (cm, change) {
+            // cmdoc.getValue() : 编辑器文本字符串
+            marked(cmdoc.getValue(), function (err, content) {
+                // content : 解析后的HTML文本字符串
+                rrPreview.innerHTML = content;
+            });
+        });
+
+        // 注册编辑器事件
+        // 标准的DOM事件
+        // jQuery方式: 
+        //     $('.rr .rr-head').on('click', Ringring.onhead(cm, cmdoc));
+        rrHead.addEventListener('click', Ringring.onhead(cm, cmdoc), false);
+        rrListitem.addEventListener('click', Ringring.onlistitem(cm, cmdoc), false);
+        rrEmpha.addEventListener('click', Ringring.onempha(cm, cmdoc), false);
+        rrBlockquote.addEventListener('click', Ringring.onblockquote(cm, cmdoc), false);
+        rrCode.addEventListener('click', Ringring.oncode(cm, cmdoc), false);
+        rrLine.addEventListener('click', Ringring.online(cm, cmdoc), false);
+    }(Ringring, CodeMirror, marked, hljs));
+    </script>
+</body>
+</html>
