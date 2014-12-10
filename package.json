@@ -1,6 +1,6 @@
 {
   "name": "ringring",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "authors": "tulayang",
   "license": "MIT",
   "main": "lib/ringring.js",
@@ -11,6 +11,7 @@
     "test",
     "tests"
   ],
+  "keywords": ["markdown","editor","javascript"],
   "dependencies": {
     "codemirror": "4.8.0"
   }
