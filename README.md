@@ -12,7 +12,7 @@ ringring依赖CodeMirror模块.
 
 另外,如果你想编写可视化代码高亮好用的markdown编辑器,还需要借助其他几个模块.
 
- * [CodeMirror](https://github.com/tulayang/CodeMirror)
+ * [CodeMirror](https://github.com/tulayang/CodeMirror)  
    Ringring依赖的主要模块,提供编辑器基础编辑功能
  * [marked](https://github.com/chjj/marked)  
    html解析器模块,解析编辑器的文本字符串,生成HTML字符串
